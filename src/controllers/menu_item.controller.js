@@ -4,6 +4,8 @@ const path = require("path")
 const fs = require("fs");
 
 exports.addMenuItem = async (req, res) => {
+    console.log(req.body);
+    
     try {
         const tenantId = req.user.tenant_id;
         const {title, price, netPrice, taxId, categoryId} = req.body;
