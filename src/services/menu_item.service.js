@@ -1,73 +1,9 @@
 const { getMySqlPromiseConnection } = require("../config/mysql.db")
 
-// exports.addMenuItemDB = async (title, price, netPrice, taxId, categoryId, tenantId) => {
-//     const conn = await getMySqlPromiseConnection();
-//     try {
-
-//         const sql = `
-//         INSERT INTO menu_items
-//         (title, price, net_price, tax_id, category, tenant_id)
-//         VALUES
-//         (?, ?, ?, ?, ?, ?);
-//         `;
-
-//         const [result] = await conn.query(sql, [title, price, netPrice, taxId, categoryId, tenantId]);
-
-//         return result.insertId;
-//     } catch (error) {
-//         console.error(error);
-//         throw error;
-//     } finally {
-//         conn.release();
-//     }
-// }
-
-
-// exports.updateMenuItemDB = async (id, title, price, netPrice, taxId, categoryId, tenantId) => {
-//     const conn = await getMySqlPromiseConnection();
-//     try {
-
-//         const sql = `
-//         UPDATE menu_items SET
-//         title = ?, price = ?, net_price = ?, tax_id = ?, category = ?
-//         WHERE id = ? AND tenant_id = ?;
-//         `;
-
-//         await conn.query(sql, [title, price, netPrice, taxId, categoryId, id, tenantId]);
-
-//         return;
-//     } catch (error) {
-//         console.error(error);
-//         throw error;
-//     } finally {
-//         conn.release();
-//     }
-// }
-
-// exports.updateMenuItemImageDB = async (id, image, tenantId) => {
-//     const conn = await getMySqlPromiseConnection();
-//     try {
-
-//         const sql = `
-//         UPDATE menu_items SET
-//         image = ?
-//         WHERE id = ? AND tenant_id = ?;
-//         `;
-
-//         await conn.query(sql, [image, id, tenantId]);
-
-//         return;
-//     } catch (error) {
-//         console.error(error);
-//         throw error;
-//     } finally {
-//         conn.release();
-//     }
-// }
-
 exports.addMenuItemDB = async (title, price, netPrice, taxId, categoryId, tenantId) => {
     const conn = await getMySqlPromiseConnection();
     try {
+
         const sql = `
         INSERT INTO menu_items
         (title, price, net_price, tax_id, category, tenant_id)
@@ -84,11 +20,12 @@ exports.addMenuItemDB = async (title, price, netPrice, taxId, categoryId, tenant
     } finally {
         conn.release();
     }
-};
+}
 
 exports.updateMenuItemDB = async (id, title, price, netPrice, taxId, categoryId, tenantId) => {
     const conn = await getMySqlPromiseConnection();
     try {
+
         const sql = `
         UPDATE menu_items SET
         title = ?, price = ?, net_price = ?, tax_id = ?, category = ?
@@ -104,11 +41,12 @@ exports.updateMenuItemDB = async (id, title, price, netPrice, taxId, categoryId,
     } finally {
         conn.release();
     }
-};
+}
 
 exports.updateMenuItemImageDB = async (id, image, tenantId) => {
     const conn = await getMySqlPromiseConnection();
     try {
+
         const sql = `
         UPDATE menu_items SET
         image = ?
@@ -124,8 +62,7 @@ exports.updateMenuItemImageDB = async (id, image, tenantId) => {
     } finally {
         conn.release();
     }
-};
-
+}
 
 exports.deleteMenuItemDB = async (id, tenantId) => {
     const conn = await getMySqlPromiseConnection();
