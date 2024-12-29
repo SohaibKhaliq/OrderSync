@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for macos14 (arm64)
 --
--- Host: 127.0.0.1    Database: restropro_saas
+-- Host: 127.0.0.1    Database: OrderSync_saas
 -- ------------------------------------------------------
 -- Server version	8.3.0
 
