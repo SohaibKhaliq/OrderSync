@@ -3,40 +3,12 @@ const { addMenuItemDB, updateMenuItemDB, deleteMenuItemDB, addMenuItemAddonDB, u
 const path = require("path")
 const fs = require("fs");
 
-// exports.addMenuItem = async (req, res) => {
-//     try {
-//         const tenantId = req.user.tenant_id;
-//         const {title, price, netPrice, taxId, categoryId} = req.body;
-
-//         if(!(title && price)) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "Please provide required details: title, price"
-//             });
-//         }
-
-//         const menuItemId = await addMenuItemDB(title, price, netPrice, taxId, categoryId, tenantId);
-
-//         return res.status(200).json({
-//             success: true,
-//             message: "Menu Item Added.",
-//             menuItemId
-//         })
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({
-//             success: false,
-//             message: "Something went wrong! Please try later!"
-//         });
-//     }
-// };
-
 exports.addMenuItem = async (req, res) => {
     try {
         const tenantId = req.user.tenant_id;
-        const { title, price, netPrice, taxId, categoryId } = req.body;
+        const {title, price, netPrice, taxId, categoryId} = req.body;
 
-        if (!(title && price)) {
+        if(!(title && price)) {
             return res.status(400).json({
                 success: false,
                 message: "Please provide required details: title, price"
@@ -45,25 +17,11 @@ exports.addMenuItem = async (req, res) => {
 
         const menuItemId = await addMenuItemDB(title, price, netPrice, taxId, categoryId, tenantId);
 
-        if (req.files && req.files.image) {
-            const file = req.files.image;
-            const imagePath = path.join(__dirname, `../../public/${tenantId}/`) + menuItemId;
-
-            if (!fs.existsSync(path.join(__dirname, `../../public/${tenantId}/`))) {
-                fs.mkdirSync(path.join(__dirname, `../../public/${tenantId}/`), { recursive: true });
-            }
-
-            const imageURL = `/public/${tenantId}/${menuItemId}`;
-
-            await file.mv(imagePath);
-            await updateMenuItemImageDB(menuItemId, imageURL, tenantId);
-        }
-
         return res.status(200).json({
             success: true,
             message: "Menu Item Added.",
             menuItemId
-        });
+        })
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -176,44 +134,27 @@ exports.deleteMenuItem = async (req, res) => {
     }
 };
 
-// exports.getAllMenuItems = async (req, res) => {
-//     try {
-//         const tenantId = req.user.tenant_id;
-//         const [menuItems, addons, variants] = await Promise.all([
-//             getAllMenuItemsDB(tenantId),
-//             getAllAddonsDB(tenantId),
-//             getAllVariantsDB(tenantId)
-//         ]);
-
-//         const formattedMenuItems = menuItems.map(item => {
-//             const itemAddons = addons.filter(addon => addon.item_id == item.id);
-//             const itemVariants = variants.filter(variant => variant.item_id == item.id);
-
-//             return {
-//                 ...item,
-//                 addons: [...itemAddons],
-//                 variants: [...itemVariants],
-//             }
-//         })
-
-//         return res.status(200).json(formattedMenuItems);
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({
-//             success: false,
-//             message: "Something went wrong! Please try later!"
-//         });
-//     }
-// };
 exports.getAllMenuItems = async (req, res) => {
     try {
         const tenantId = req.user.tenant_id;
-        const menuItems = await getAllMenuItemsDB(tenantId);
+        const [menuItems, addons, variants] = await Promise.all([
+            getAllMenuItemsDB(tenantId),
+            getAllAddonsDB(tenantId),
+            getAllVariantsDB(tenantId)
+        ]);
 
-        return res.status(200).json({
-            success: true,
-            data: menuItems
-        });
+        const formattedMenuItems = menuItems.map(item => {
+            const itemAddons = addons.filter(addon => addon.item_id == item.id);
+            const itemVariants = variants.filter(variant => variant.item_id == item.id);
+
+            return {
+                ...item,
+                addons: [...itemAddons],
+                variants: [...itemVariants],
+            }
+        })
+
+        return res.status(200).json(formattedMenuItems);
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -222,6 +163,7 @@ exports.getAllMenuItems = async (req, res) => {
         });
     }
 };
+
 exports.getMenuItem = async (req, res) => {
     try {
         const tenantId = req.user.tenant_id;
