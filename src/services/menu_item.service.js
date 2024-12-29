@@ -1,17 +1,17 @@
 const { getMySqlPromiseConnection } = require("../config/mysql.db")
 
-exports.addMenuItemDB = async (title, price, netPrice, taxId, categoryId, tenantId) => {
+exports.addMenuItemDB = async (title, price, netPrice, taxId, categoryId, tenantId,image) => {
     const conn = await getMySqlPromiseConnection();
     try {
 
         const sql = `
         INSERT INTO menu_items
-        (title, price, net_price, tax_id, category, tenant_id)
+        (title, price, net_price, tax_id, category, tenant_id, image)
         VALUES
-        (?, ?, ?, ?, ?, ?);
+        (?, ?, ?, ?, ?, ?, ?);
         `;
 
-        const [result] = await conn.query(sql, [title, price, netPrice, taxId, categoryId, tenantId]);
+        const [result] = await conn.query(sql, [title, price, netPrice, taxId, categoryId, tenantId, image]);
 
         return result.insertId;
     } catch (error) {
